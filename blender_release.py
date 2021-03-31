@@ -1,9 +1,9 @@
 import os
 import zipfile
-import github_release
-import github
+# import github_release
+# import github
 
-g = github.Github()
+# g = github.Github()
 
 #github.ApplicationOAuth.ApplicationOAuth.get_login_url()
 """
@@ -17,22 +17,21 @@ repo = g.get_repo("yiannipapazis/image_menus")
 #user.login()
 #print(user.name)
 #Github.get_repo("yiannipapazis/image_menus")
-name = 'Test.zip'
+name = 'Test2.zip'
 ignore_dir = ['.git', '__pycache__']
 ignore_file = [name, '.gitignore']
+
 def zipdir(path, ziph):
     for root, dirs, files in os.walk(path):
-        print(root)
+        dirs[:] = [d for d in dirs if d not in ignore_dir]
         print(dirs)
-        if root in ignore_dir:
-            pass
-        else:
-            for file in files:
-                if file in ignore_file:
-                    pass
-                else:
-                    ziph.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
+        for file in files:
+            if file in ignore_file:
+                pass
+            else:
+                ziph.write(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(path, '..')))
 zipf = zipfile.ZipFile(name, 'w', zipfile.ZIP_DEFLATED)
+
 zipdir(os.getcwd(), zipf)
 zipf.close()
 
